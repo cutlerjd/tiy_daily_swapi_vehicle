@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import '../styles/App.css';
+import Card from './Card'
 
 class App extends Component {
   // PROPS AND STATE
@@ -46,7 +47,7 @@ class App extends Component {
     Store vehicles state in a variable.
     Map over this variable to access the values needed to render.
     */
-    })
+
     return (
       <div className="App">
         {/*
@@ -54,6 +55,7 @@ class App extends Component {
          jumbotron section, form section, vehicle cards section.
          Your form will also need a header in which you will pass the state of the form upon submit.
          */}
+         <Card />
       </div>
     );
   }
