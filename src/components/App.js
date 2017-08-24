@@ -1,20 +1,36 @@
 import React, { Component } from 'react';
 import '../styles/App.css';
 import Card from './Card'
+import Title from './Title'
+let styles = {
+  display:"flex",
+  flexWrap: "wrap"
+}
 
 class App extends Component {
   // PROPS AND STATE
   // Set props and state below.
   // You should set state for vehicles (empty array), value (empty string), pilot (empty) string.
   // Enter your code below:
-
+  constructor(props) {
+    super(props)
+    this.state = {
+      vehicles:[],
+      pilot:'',
+      value:''
+    }
+  }
 
 
   // FORM: HANDLE INPUT CHANGES
   // handleNameChange below:
   // See form lesson for details.
   // Enter your code below:
-
+  handleNameChange = (e) => (
+    this.setState({
+      value: e.target.value
+    })
+  )
 
 
   //  FORM: SUBMIT METHOD
@@ -23,6 +39,12 @@ class App extends Component {
   // Once the form is sumbited, two things need to happen: set the state of pilot to the input value.
   // Then, set the value of the input back to an empty string.
   // Enter your code below:
+  handleSubmit = (e) => {
+    e.preventDefault()
+    this.setState({
+      pilot:this.state.value
+    })
+  }
 
 
   // LIFECYCLE
@@ -32,6 +54,12 @@ class App extends Component {
   // In your response look for 'results'. It should return this array.
   // You will want to use this array when you set the state of 'vehicles'. You will need this data in your render.
   // Enter your code below:
+  componentDidMount() {
+    fetch("https://swapi.co/api/vehicles/")
+      .then((response) => response.json())
+      .then((vehicles) =>
+        this.setState({ vehicles: vehicles.results }))
+  }
 
 
   // RENDER
@@ -41,7 +69,7 @@ class App extends Component {
   // You will need the following values: name, model, manufacturer, class, passengers, crew, length, max speed, and cargo capacity.
   // Rendering: create a 'card' for each of the vehicles. consult the Bootstrap 4 docs for details.
   // Enter your code below:
-
+  
   render() {
     /*
     Store vehicles state in a variable.
@@ -55,7 +83,20 @@ class App extends Component {
          jumbotron section, form section, vehicle cards section.
          Your form will also need a header in which you will pass the state of the form upon submit.
          */}
-         <Card />
+        <Title description="This is a site that uses the Star Wars API called SWAPI!" title="SWAPI Search" />
+        <div className="card">
+        <form className="form-inline" onSubmit={this.handleSubmit}>
+          <label className="sr-only" for="name">Name</label>
+          <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" id="name" placeholder="Pilot Name" onChange={this.handleNameChange} value={this.state.value}/>
+          <button type="submit" className="btn btn-primary">Submit</button>
+        </form>
+        <h2>{this.state.pilot}</h2>
+        </div>
+        <div style={styles}>
+        {this.state.vehicles.map(item => (
+          <Card vehicle={item} />
+        ))}
+        </div>
       </div>
     );
   }
